@@ -449,10 +449,5 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
             mAppIcons.add(appIcon);
             return this;
         }
-
-        public Builder setBottomSheetCornerRadius(@Dimension int radius) {
-            mCornerRadius = radius;
-            return this;
-        }
     }
 }

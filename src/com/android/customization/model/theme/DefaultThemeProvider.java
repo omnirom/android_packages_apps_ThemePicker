@@ -141,34 +141,42 @@ public class DefaultThemeProvider extends ResourcesApkProvider implements ThemeB
                                 "string", mStubPackageName)));
 
                 String shapeOverlayPackage = getOverlayPackage(SHAPE_PREFIX, themeName);
+                Log.d(TAG, SHAPE_PREFIX + " " + shapeOverlayPackage);
                 mOverlayProvider.addShapeOverlay(builder, shapeOverlayPackage);
 
                 String fontOverlayPackage = getOverlayPackage(FONT_PREFIX, themeName);
+                Log.d(TAG, FONT_PREFIX + " " + fontOverlayPackage);
                 mOverlayProvider.addFontOverlay(builder, fontOverlayPackage);
 
                 String colorOverlayPackage = getOverlayPackage(COLOR_PREFIX, themeName);
+                Log.d(TAG, COLOR_PREFIX + " " + colorOverlayPackage);
                 mOverlayProvider.addColorOverlay(builder, colorOverlayPackage);
 
                 String iconAndroidOverlayPackage = getOverlayPackage(ICON_ANDROID_PREFIX,
                         themeName);
+                Log.d(TAG, ICON_ANDROID_PREFIX + " " + iconAndroidOverlayPackage);
 
                 mOverlayProvider.addAndroidIconOverlay(builder, iconAndroidOverlayPackage);
 
                 String iconSysUiOverlayPackage = getOverlayPackage(ICON_SYSUI_PREFIX, themeName);
+                Log.d(TAG, ICON_SYSUI_PREFIX + " " + iconSysUiOverlayPackage);
 
                 mOverlayProvider.addSysUiIconOverlay(builder, iconSysUiOverlayPackage);
 
                 String iconLauncherOverlayPackage = getOverlayPackage(ICON_LAUNCHER_PREFIX,
                         themeName);
-                mOverlayProvider.addNoPreviewIconOverlay(builder, iconLauncherOverlayPackage);
+                 Log.d(TAG, ICON_LAUNCHER_PREFIX + " " + iconLauncherOverlayPackage);
+               mOverlayProvider.addNoPreviewIconOverlay(builder, iconLauncherOverlayPackage);
 
                 String iconThemePickerOverlayPackage = getOverlayPackage(ICON_THEMEPICKER_PREFIX,
                         themeName);
-                mOverlayProvider.addNoPreviewIconOverlay(builder,
+                  Log.d(TAG, ICON_THEMEPICKER_PREFIX + " " + iconThemePickerOverlayPackage);
+               mOverlayProvider.addNoPreviewIconOverlay(builder,
                         iconThemePickerOverlayPackage);
 
                 String iconSettingsOverlayPackage = getOverlayPackage(ICON_SETTINGS_PREFIX,
                         themeName);
+                 Log.d(TAG, ICON_SETTINGS_PREFIX + " " + iconSettingsOverlayPackage);
 
                 mOverlayProvider.addNoPreviewIconOverlay(builder, iconSettingsOverlayPackage);
 
@@ -176,8 +184,7 @@ public class DefaultThemeProvider extends ResourcesApkProvider implements ThemeB
 
                 mThemes.add(builder.build(mContext));
             } catch (NameNotFoundException | NotFoundException e) {
-                Log.w(TAG, String.format("Couldn't load part of theme %s, will skip it", themeName),
-                        e);
+                Log.d(TAG, String.format("Couldn't load part of theme %s, will skip it", themeName));
             }
         }
 
