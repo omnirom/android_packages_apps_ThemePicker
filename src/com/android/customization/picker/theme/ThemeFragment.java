@@ -386,7 +386,7 @@ public class ThemeFragment extends ToolbarFragment {
 
             addPage(new ThemeCoverPage(activity, theme.getTitle(),
                     previewInfo.resolveAccentColor(res), previewInfo.icons,
-                    previewInfo.headlineFontFamily, previewInfo.bottomSheeetCornerRadius,
+                    previewInfo.headlineFontFamily,
                     previewInfo.shapeDrawable, previewInfo.shapeAppIcons, editClickListener,
                     mColorButtonIds, mColorTileIds, mColorTileIconIds, mShapeIconIds,
                     wallpaperListener, coverCardLayoutListener));
@@ -484,6 +484,7 @@ public class ThemeFragment extends ToolbarFragment {
                     }
                 });
             }
+            Log.d(TAG, "ThemePreviewAdapter " + theme.getTitle() + " " + previewInfo.wallpaperAsset);
             if (previewInfo.wallpaperAsset != null) {
                 addPage(new ThemePreviewPage(activity, R.string.preview_name_wallpaper,
                         R.drawable.ic_nav_wallpaper, R.layout.preview_card_wallpaper_content,
