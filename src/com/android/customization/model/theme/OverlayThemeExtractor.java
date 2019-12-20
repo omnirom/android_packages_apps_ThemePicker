@@ -17,6 +17,7 @@ import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
 
@@ -71,6 +72,25 @@ class OverlayThemeExtractor {
                             colorOverlayPackage));
         } else {
             addSystemDefaultColor(builder);
+        }
+    }
+
+    void addPrimaryOverlay(Builder builder, String primaryOverlayPackage)
+            throws NameNotFoundException {
+        
+        if (!TextUtils.isEmpty(primaryOverlayPackage)) {
+            @ColorInt int primaryColor = -1;
+            try {
+                primaryColor = loadColor(ResourceConstants.PRIMARY_COLOR_NAME,
+                            primaryOverlayPackage);
+            } catch (Resources.NotFoundException e) {
+                // can be the case for a dark only primary that only has values-night
+                primaryColor = getSystemDefaultPrimary();
+            }
+            builder.addOverlayPackage(getOverlayCategory(primaryOverlayPackage),
+                    primaryOverlayPackage).setColorPrimary(primaryColor);
+        } else {
+            addSystemDefaultPrimary(builder);
         }
     }
 
@@ -188,6 +208,19 @@ class OverlayThemeExtractor {
                 system.getIdentifier(ResourceConstants.ACCENT_COLOR_DARK_NAME, "color",
                         ResourceConstants.ANDROID_PACKAGE), null);
         builder.setColorAccentDark(colorAccentDark);
+    }
+
+    void addSystemDefaultPrimary(Builder builder) {
+        @ColorInt int colorPrimary = getSystemDefaultPrimary();
+        builder.setColorPrimary(colorPrimary);
+    }
+
+    @ColorInt int getSystemDefaultPrimary() {
+        Resources system = Resources.getSystem();
+        @ColorInt int colorPrimary = system.getColor(
+                system.getIdentifier(ResourceConstants.PRIMARY_COLOR_NAME, "color",
+                        ResourceConstants.ANDROID_PACKAGE), null);
+        return colorPrimary;
     }
 
     void addSystemDefaultFont(Builder builder) {

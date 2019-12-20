@@ -118,6 +118,6 @@ public class CustomThemeComponentFragment extends CustomThemeStepFragment {
                 mSelectedOption = options.get(0);
             }
             mOptionsController.setSelectedOption(mSelectedOption);
-        }, false);
+        }, true);
     }
 }
