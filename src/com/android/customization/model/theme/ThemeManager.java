@@ -160,6 +160,9 @@ public class ThemeManager implements CustomizationManager<ThemeBundle> {
         mCurrentOverlays = null;
         if (allApplied) {
             mEventLogger.logThemeApplied(theme, theme instanceof CustomTheme);
+            if (theme.getHeaderInfo() != null) {
+                applyHeader(theme.getHeaderInfo());
+            }
             callback.onSuccess();
         } else {
             callback.onError(null);
@@ -214,5 +217,13 @@ public class ThemeManager implements CustomizationManager<ThemeBundle> {
             Settings.Secure.putString(mActivity.getContentResolver(),
                     ResourceConstants.THEME_SETTING, new JSONObject().toString());
         }
+    }
+
+    private void applyHeader(ThemeBundledHeaderInfo headerInfo) {
+        Settings.System.putString(mActivity.getContentResolver(),
+                Settings.System.OMNI_STATUS_BAR_CUSTOM_HEADER_IMAGE,
+                headerInfo.getDrawableResName());
+        Settings.System.putString(mActivity.getContentResolver(),
+                Settings.System.OMNI_STATUS_BAR_CUSTOM_HEADER_PROVIDER, "static");
     }
 }
