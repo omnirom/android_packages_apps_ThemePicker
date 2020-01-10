@@ -550,6 +550,28 @@ public class ThemeFragment extends ToolbarFragment {
                     }
                 });
             }
+            if (previewInfo.headerImage != null) {
+                addPage(new ThemePreviewPage(activity, R.string.preview_name_header,
+                        R.drawable.ic_nav_header, R.layout.preview_card_header_content,
+                        previewInfo.resolveAccentColor(res), previewInfo.resolvePrimaryColor(res)) {
+
+
+                    @Override
+                    protected boolean containsWallpaper() {
+                        return false;
+                    }
+
+                    @Override
+                    protected void bindBody(boolean forceRebind) {
+                        if (card == null) {
+                            return;
+                        }
+                        if (forceRebind) {
+                            card.requestLayout();
+                        }
+                    }
+                });
+            }
         }
 
         public void rebindWallpaperIfAvailable() {
