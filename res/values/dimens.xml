@@ -105,6 +105,7 @@
     <!-- For a corner radius of this size or larger, we'll preview a rounded qsb widget. -->
     <dimen name="roundCornerThreshold">16dp</dimen>
 
-    <dimen name="min_taptarget_height">48dp</dimen>
+    <dimen name="min_taptarget_height">44dp</dimen>
+    <dimen name="preview_header_height">64dp</dimen>
 
 </resources>

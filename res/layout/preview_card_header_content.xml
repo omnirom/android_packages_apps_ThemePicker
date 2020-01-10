@@ -22,25 +22,20 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     tools:showIn="@layout/theme_preview_card">
-    <TextView
-        style="@style/FontCardTitleStyle"
-        android:id="@+id/font_card_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:gravity="top|center_horizontal"
-        android:maxLines="1"
-        android:text="@string/font_card_title"/>
     <Space
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1" />
     <TextView
-        style="@style/FontCardBodyTextStyle"
-        android:id="@+id/font_card_body"
+        android:id="@+id/header_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="bottom|center_horizontal"
-        android:layout_gravity="bottom|center_horizontal"
-        android:text="@string/font_card_body"/>
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center_vertical"
+        android:drawableStart="@drawable/ic_settings"
+        android:drawablePadding="4dp"
+        android:background="?android:attr/selectableItemBackground" />
+
 </LinearLayout>
