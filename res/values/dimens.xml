@@ -106,5 +106,6 @@
     <dimen name="roundCornerThreshold">16dp</dimen>
 
     <dimen name="min_taptarget_height">48dp</dimen>
+    <dimen name="preview_header_height">64dp</dimen>
 
 </resources>
