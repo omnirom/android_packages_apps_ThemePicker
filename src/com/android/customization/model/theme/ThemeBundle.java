@@ -90,15 +90,19 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
     private WallpaperInfo mOverrideWallpaper;
     private Asset mOverrideWallpaperAsset;
     private CharSequence mContentDescription;
+    @Nullable private final ThemeBundledHeaderInfo mHeaderInfo;
+    private boolean mUseThemeHeader = true;
 
     protected ThemeBundle(String title, Map<String, String> overlayPackages,
             boolean isDefault, @Nullable WallpaperInfo wallpaperInfo,
-            @Nullable String wallpaperOptions, PreviewInfo previewInfo) {
+            @Nullable String wallpaperOptions, @Nullable ThemeBundledHeaderInfo headerInfo,
+            PreviewInfo previewInfo) {
         mTitle = title;
         mIsDefault = isDefault;
         mPreviewInfo = previewInfo;
         mWallpaperInfo = wallpaperInfo;
         mWallpaperOptions = wallpaperOptions;
+        mHeaderInfo = headerInfo;
         mPackagesByCategory = Collections.unmodifiableMap(overlayPackages);
     }
 
@@ -194,6 +198,7 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
         return mOverrideWallpaperAsset;
     }
 
+    @Nullable
     public WallpaperInfo getWallpaperInfo() {
         return mWallpaperInfo;
     }
@@ -201,6 +206,19 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
     @Nullable
     public String getWallpaperOptions() {
         return mWallpaperOptions;
+    }
+
+    @Nullable
+    public ThemeBundledHeaderInfo getHeaderInfo() {
+        return mHeaderInfo;
+    }
+
+    public void setUseThemeHeader(boolean value) {
+        mUseThemeHeader = value;
+    }
+
+    public boolean shouldUseThemeHeader() {
+        return mUseThemeHeader;
     }
 
     boolean isDefault() {
@@ -292,11 +310,13 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
         public final Drawable shapeDrawable;
         @Nullable public final Asset wallpaperAsset;
         public final List<Drawable> shapeAppIcons;
+        @Nullable public final Drawable headerImage;
 
         private PreviewInfo(Context context, Typeface bodyFontFamily, Typeface headlineFontFamily,
                 int colorAccentLight, int colorAccentDark, int colorPrimary,
                 List<Drawable> icons, Drawable shapeDrawable,
-                @Nullable Asset wallpaperAsset, List<Drawable> shapeAppIcons) {
+                @Nullable Asset wallpaperAsset, List<Drawable> shapeAppIcons,
+                @Nullable Drawable headerImage) {
             this.bodyFontFamily = bodyFontFamily;
             this.headlineFontFamily = headlineFontFamily;
             this.colorAccentLight = colorAccentLight;
@@ -307,6 +327,7 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
             this.wallpaperAsset = wallpaperAsset == null
                     ? null : new BitmapCachingAsset(context, wallpaperAsset);
             this.shapeAppIcons = shapeAppIcons;
+            this.headerImage = headerImage;
         }
 
         /**
@@ -342,10 +363,11 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
         private String mWallpaperOptions;
         protected Map<String, String> mPackages = new HashMap<>();
         private List<Drawable> mAppIcons = new ArrayList<>();
+        private ThemeBundledHeaderInfo mHeaderInfo;
 
         public ThemeBundle build(Context context) {
             return new ThemeBundle(mTitle, mPackages, mIsDefault, mWallpaperInfo, mWallpaperOptions,
-                    createPreviewInfo(context));
+                    mHeaderInfo, createPreviewInfo(context));
         }
 
         public PreviewInfo createPreviewInfo(Context context) {
@@ -372,9 +394,10 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
                     //  non-adaptive icons
                 }
             }
+            Drawable headerImage = mHeaderInfo != null ? mHeaderInfo.getDrawable(context) : null;
             return new PreviewInfo(context, mBodyFontFamily, mHeadlineFontFamily, mColorAccentLight,
                     mColorAccentDark, mColorPrimary, mIcons, shapeDrawable,
-                    mWallpaperAsset, shapeIcons);
+                    mWallpaperAsset, shapeIcons, headerImage);
         }
 
         public Map<String, String> getPackages() {
@@ -477,6 +500,13 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
         public int resolveAccentColor(Resources res) {
             return (res.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
                     == Configuration.UI_MODE_NIGHT_YES ? mColorAccentDark : mColorAccentLight;
+        }
+
+        public Builder setHeaderInfo(String headerPackageName, String headerResName,
+                String themeId, String headerResValue) {
+            mHeaderInfo = new ThemeBundledHeaderInfo(headerPackageName, headerResName,
+                    themeId, headerResValue);
+            return this;
         }
     }
 }

@@ -89,6 +89,7 @@ public class DefaultThemeProvider extends ResourcesApkProvider implements ThemeB
     private static final String WALLPAPER_THUMB_PREFIX = "theme_wallpaper_thumbnail_";
     private static final String WALLPAPER_ACTION_PREFIX = "theme_wallpaper_action_";
     private static final String WALLPAPER_OPTIONS_PREFIX = "theme_wallpaper_options_";
+    private static final String HEADER_PREFIX = "theme_header_";
 
     private static final String DEFAULT_THEME_NAME= "default";
     private static final String THEME_TITLE_FIELD = "_theme_title";
@@ -214,6 +215,7 @@ public class DefaultThemeProvider extends ResourcesApkProvider implements ThemeB
             mOverlayProvider.addNoPreviewIconOverlay(builder, iconSettingsOverlayPackage);
 
             addWallpaper(themeName, builder);
+            addHeader(themeName, builder);
 
             mThemes.add(builder.build(mContext));
         }
@@ -283,6 +285,24 @@ public class DefaultThemeProvider extends ResourcesApkProvider implements ThemeB
         } catch (NotFoundException e) {
             // Nothing to do here, if there's no wallpaper we'll just omit wallpaper
             Log.d(TAG, "Skipping wallpaper");
+        }
+    }
+
+    private void addHeader(String themeName, Builder builder) {
+        try {
+            String headerResName = HEADER_PREFIX + themeName;
+            int headerResId = mStubApkResources.getIdentifier(headerResName,
+                    "string", mStubPackageName);
+
+            if (headerResId != ID_NULL) {
+                String headerResValue = mStubApkResources.getString(headerResId);
+                Log.d(TAG, "Adding header " + headerResName + " " + headerResValue);
+                builder.setHeaderInfo(mStubPackageName, headerResName,
+                        themeName, headerResValue);
+            }
+        } catch (NotFoundException e) {
+            // Nothing to do here, if there's no wallpaper we'll just omit wallpaper
+            Log.d(TAG, "Skipping header");
         }
     }
 

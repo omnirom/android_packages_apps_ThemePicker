@@ -78,6 +78,10 @@ abstract class ThemePreviewPage extends PreviewPage {
         return false;
     }
 
+    protected boolean containsHeader() {
+        return false;
+    }
+
     protected abstract void bindBody(boolean forceRebind);
 
     static class ThemeCoverPage extends ThemePreviewPage implements TimeContainer {
