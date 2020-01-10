@@ -27,6 +27,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -399,7 +401,6 @@ public class ThemeFragment extends ToolbarFragment {
                     title.setTypeface(previewInfo.headlineFontFamily);
                     TextView body = card.findViewById(R.id.font_card_body);
                     body.setTypeface(previewInfo.bodyFontFamily);
-                    card.findViewById(R.id.font_card_divider).setBackgroundColor(accentColor);
                 }
             });
             if (previewInfo.icons.size() >= mIconIds.length) {
@@ -550,6 +551,42 @@ public class ThemeFragment extends ToolbarFragment {
                     }
                 });
             }
+            if (previewInfo.headerImage != null) {
+                addPage(new ThemePreviewPage(activity, R.string.preview_name_header,
+                        R.drawable.ic_nav_wallpaper, R.layout.preview_card_header_content,
+                        previewInfo.resolveAccentColor(res), previewInfo.resolvePrimaryColor(res)) {
+
+
+                    @Override
+                    protected boolean containsWallpaper() {
+                        return false;
+                    }
+
+                    @Override
+                    protected void bindBody(boolean forceRebind) {
+                        if (card == null) {
+                            return;
+                        }
+                        ImageView v = (ImageView) card.findViewById(R.id.theme_preview_card_background_image);
+                        FrameLayout.LayoutParams parms = (FrameLayout.LayoutParams) v.getLayoutParams();
+                        parms.height = activity.getResources().getDimensionPixelSize(R.dimen.preview_header_height);
+                        v.setLayoutParams(parms);
+                        v.setImageDrawable(previewInfo.headerImage);
+
+                        boolean headerDisabled = Settings.System.getInt(activity.getContentResolver(),
+                                Settings.System.OMNI_STATUS_BAR_CUSTOM_HEADER, 0) == 0;
+                        TextView desc = (TextView) card.findViewById(R.id.header_description);
+                        if (headerDisabled) {
+                            desc.setText(R.string.hint_header_disabled);
+                        } else {
+                            desc.setVisibility(View.GONE);
+                        }
+                        if (forceRebind) {
+                            card.requestLayout();
+                        }
+                    }
+                });
+            }
         }
 
         public void rebindWallpaperIfAvailable() {
@@ -608,7 +645,7 @@ public class ThemeFragment extends ToolbarFragment {
                 if (mScrim != null) {
                     background = new LayerDrawable(new Drawable[]{background, mScrim});
                 }
-                ((ImageView) view.findViewById(R.id.theme_preview_card_background)).setImageDrawable(background);
+                ((ImageView) view.findViewById(R.id.theme_preview_card_background_image)).setImageDrawable(background);
                 if (mScrim == null && !mIsTranslucent) {
                     boolean shouldRecycle = false;
                     if (bitmap.getConfig() == Config.HARDWARE) {
@@ -619,11 +656,12 @@ public class ThemeFragment extends ToolbarFragment {
                     if (shouldRecycle) {
                         bitmap.recycle();
                     }
+                    // looks more confusing then what it helps
                     TextView header = view.findViewById(R.id.theme_preview_card_header);
                     if ((colorsHint & WallpaperColors.HINT_SUPPORTS_DARK_TEXT) == 0) {
-                        int colorLight = res.getColor(R.color.text_color_light, null);
+                        /*int colorLight = res.getColor(R.color.text_color_light, null);
                         header.setTextColor(colorLight);
-                        header.setCompoundDrawableTintList(ColorStateList.valueOf(colorLight));
+                        header.setCompoundDrawableTintList(ColorStateList.valueOf(colorLight));*/
                     } else {
                         header.setTextColor(res.getColor(R.color.text_color_dark, null));
                         header.setCompoundDrawableTintList(ColorStateList.valueOf(
