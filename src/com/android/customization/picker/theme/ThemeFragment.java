@@ -420,6 +420,8 @@ public class ThemeFragment extends ToolbarFragment {
                     title.setTypeface(previewInfo.headlineFontFamily);
                     TextView body = card.findViewById(R.id.font_card_body);
                     body.setTypeface(previewInfo.bodyFontFamily);
+                    TextView hintText = card.findViewById(R.id.font_card_hint);
+                    hintText.setTypeface(previewInfo.bodyFontFamily);
                 }
             });
             if (previewInfo.icons.size() >= mIconIds.length) {

@@ -24,4 +24,5 @@
     <string name="hint_header_disabled">Header images are disabled</string>
     <string name="keep_my_header">Keep current header</string>
     <string name="hint_header_system">Current header</string>
+    <string name="hint_font_restart"><b>Note:</b> Some system components require restart to fully apply font changes</string>
 </resources>
