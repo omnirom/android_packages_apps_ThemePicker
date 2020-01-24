@@ -15,4 +15,10 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="primary_component_title">Esas rengi seçin</string>
+    <string name="preview_name_primary">Esas renk</string>
+    <string name="preview_name_color_new">Ara renk</string>
+    <string name="color_component_title_new">Ara rengi seçin</string>
+    <string name="no_options_message">Geçerli ve kullanılabilir bir esas renk yok</string>
+</resources>

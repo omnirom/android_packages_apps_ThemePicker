@@ -15,4 +15,10 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="primary_component_title">Vyberte hlavní barvu</string>
+    <string name="preview_name_primary">Hlavní barva</string>
+    <string name="preview_name_color_new">Barva zvýraznění</string>
+    <string name="color_component_title_new">Vyberte barvu zvýraznění</string>
+    <string name="no_options_message">Nejsou k dispozici žádné platné hlavní barvy</string>
+</resources>

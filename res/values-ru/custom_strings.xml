@@ -15,4 +15,10 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="primary_component_title">Выберите основной цвет</string>
+    <string name="preview_name_primary">Основной цвет</string>
+    <string name="preview_name_color_new">Цвет акцента</string>
+    <string name="color_component_title_new">Выберите цвет акцента</string>
+    <string name="no_options_message">Нет допустимых основных цветов</string>
+</resources>
