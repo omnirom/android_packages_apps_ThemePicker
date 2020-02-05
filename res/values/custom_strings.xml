@@ -19,7 +19,8 @@
     <string name="preview_name_primary">Primary color</string>
     <string name="preview_name_color_new">Accent color</string>
     <string name="color_component_title_new">Choose accent color</string>
-    <string name="no_options_message">No valid primary colors available</string>
+    <string name="no_options_message_primary">No possible primary colors available</string>
+    <string name="no_options_message_default">No possible options available</string>
     <string name="preview_name_header">Header</string>
     <string name="hint_header_disabled">Header images are disabled</string>
     <string name="keep_my_header">Keep current header</string>
