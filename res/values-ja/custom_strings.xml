@@ -19,6 +19,8 @@
     <string name="preview_name_primary">メインカラー</string>
     <string name="preview_name_color_new">アクセントカラー</string>
     <string name="color_component_title_new">アクセントカラーを選択</string>
+    <string name="no_options_message_primary">現在のモードで利用可能なオーバーレイはありません</string>
+    <string name="no_options_message_default">利用可能なオーバーレイはありません</string>
     <string name="preview_name_header">ヘッダー</string>
     <string name="hint_header_disabled">ヘッダー画像は無効です</string>
     <string name="keep_my_header">現在のヘッダーを維持</string>

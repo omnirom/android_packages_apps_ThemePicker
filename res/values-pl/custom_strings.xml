@@ -19,6 +19,8 @@
     <string name="preview_name_primary">Kolor podstawowy</string>
     <string name="preview_name_color_new">Kolor akcentu</string>
     <string name="color_component_title_new">Wybierz kolor akcentu</string>
+    <string name="no_options_message_primary">Brak dostępnej nakładki dla bieżącego trybu</string>
+    <string name="no_options_message_default">Brak dostępnych nakładek</string>
     <string name="preview_name_header">Nagłówek</string>
     <string name="hint_header_disabled">Obrazy nagłówka są wyłączone</string>
     <string name="keep_my_header">Zachowaj bieżący nagłówek</string>

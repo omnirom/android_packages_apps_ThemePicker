@@ -19,6 +19,8 @@
     <string name="preview_name_primary">Primärfarbe</string>
     <string name="preview_name_color_new">Akzentfarbe</string>
     <string name="color_component_title_new">Akzentfarbe wählen</string>
+    <string name="no_options_message_primary">Kein Overlay für den aktuellen Modus verfügbar</string>
+    <string name="no_options_message_default">Keine Overlays verfügbar</string>
     <string name="preview_name_header">Kopfzeile</string>
     <string name="hint_header_disabled">Kopfzeilen-Bilder sind deaktiviert</string>
     <string name="keep_my_header">Aktuelle Kopfzeile behalten</string>
