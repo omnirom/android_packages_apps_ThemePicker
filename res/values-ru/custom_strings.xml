@@ -19,6 +19,8 @@
     <string name="preview_name_primary">Основной цвет</string>
     <string name="preview_name_color_new">Цвет акцента</string>
     <string name="color_component_title_new">Выберите цвет акцента</string>
+    <string name="no_options_message_primary">Нет доступных наслоений для текущего режима</string>
+    <string name="no_options_message_default">Нет доступных наслоений</string>
     <string name="preview_name_header">Заголовок</string>
     <string name="hint_header_disabled">Изображения заголовка отключены</string>
     <string name="keep_my_header">Сохранить текущий заголовок</string>

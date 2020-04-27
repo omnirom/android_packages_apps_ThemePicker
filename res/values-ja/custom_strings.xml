@@ -15,8 +15,8 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="primary_component_title">メインカラーを選択</string>
-    <string name="preview_name_primary">メインカラー</string>
+    <string name="primary_component_title">メイン色を選択</string>
+    <string name="preview_name_primary">メイン色</string>
     <string name="preview_name_color_new">アクセントカラー</string>
     <string name="color_component_title_new">アクセントカラーを選択</string>
     <string name="no_options_message_primary">現在のモードで利用可能なオーバーレイはありません</string>
