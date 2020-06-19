@@ -66,11 +66,22 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_toStartOf="@+id/apply_button"
+                        android:layout_toStartOf="@+id/use_my_header"
                         android:ellipsize="end"
                         android:paddingLeft="4dp"
                         android:minHeight="@dimen/min_taptarget_height"
                         android:text="@string/keep_my_wallpaper"/>
+                    <CheckBox
+                        android:id="@+id/use_my_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/apply_button"
+                        android:ellipsize="end"
+                        android:paddingLeft="4dp"
+                        android:minHeight="@dimen/min_taptarget_height"
+                        android:text="@string/keep_my_header"/>
                     <Button
                         android:id="@+id/apply_button"
                         style="@style/ActionPrimaryButton"
