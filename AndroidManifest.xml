@@ -19,6 +19,7 @@
         android:requiredForAllUsers="true"
         android:restoreAnyVersion="true"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:name="com.android.customization.picker.CustomizationPickerApplication"
         android:theme="@style/CustomizationTheme">
         <activity
@@ -30,7 +31,8 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+           </intent-filter>
         </activity>
         <activity android:name="com.android.customization.picker.theme.CustomThemeActivity"
                   android:resizeableActivity="true"
