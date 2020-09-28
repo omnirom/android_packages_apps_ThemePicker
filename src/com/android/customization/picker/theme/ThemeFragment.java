@@ -18,7 +18,6 @@ package com.android.customization.picker.theme;
 import android.app.Activity;
 import android.app.WallpaperColors;
 import android.content.Context;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -28,17 +27,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -107,8 +103,6 @@ public class ThemeFragment extends ToolbarFragment {
     private WallpaperInfo mCurrentHomeWallpaper;
     private CurrentWallpaperInfoFactory mCurrentWallpaperFactory;
     private TimeTicker mTicker;
-    private CheckBox mUseMyHeaderButton;
-    private boolean mUseMyHeader;
 
     @Override
     public void onAttach(Context context) {
@@ -138,8 +132,6 @@ public class ThemeFragment extends ToolbarFragment {
         });
         mUseMyWallpaperButton = view.findViewById(R.id.use_my_wallpaper);
         mUseMyWallpaperButton.setOnCheckedChangeListener(this::onUseMyWallpaperCheckChanged);
-        mUseMyHeaderButton = view.findViewById(R.id.use_my_header);
-        mUseMyHeaderButton.setOnCheckedChangeListener(this::onUseMyHeaderCheckChanged);
         setUpOptions(savedInstanceState);
 
         return view;
@@ -218,16 +210,6 @@ public class ThemeFragment extends ToolbarFragment {
         reloadWallpaper();
     }
 
-    private void onUseMyHeaderCheckChanged(CompoundButton checkbox, boolean checked) {
-        mUseMyHeader = checked;
-        if (mSelectedTheme != null) {
-            mSelectedTheme.setUseThemeHeader(!mUseMyHeader);
-            if (mAdapter != null) {
-                mAdapter.rebindHeaderIfAvailable();
-            }
-        }
-    }
-
     private void reloadWallpaper() {
         mCurrentWallpaperFactory.createCurrentWallpaperInfos(
                 (homeWallpaper, lockWallpaper, presentationMode) -> {
@@ -259,10 +241,8 @@ public class ThemeFragment extends ToolbarFragment {
     }
 
     private void updateButtonsVisibility() {
-        boolean hasNoWallpaper = (mSelectedTheme instanceof CustomTheme) || mSelectedTheme.getWallpaperInfo() == null;
-        mUseMyWallpaperButton.setVisibility(hasNoWallpaper ? View.INVISIBLE : View.VISIBLE);
-        boolean hasNoHeader = (mSelectedTheme instanceof CustomTheme) || mSelectedTheme.getHeaderInfo() == null;
-        mUseMyHeaderButton.setVisibility(hasNoHeader ? View.INVISIBLE : View.VISIBLE);
+        mUseMyWallpaperButton.setVisibility(mSelectedTheme instanceof CustomTheme
+                ? View.INVISIBLE : View.VISIBLE);
     }
 
     private void hideError() {
@@ -294,7 +274,6 @@ public class ThemeFragment extends ToolbarFragment {
                         } else {
                             mSelectedTheme.setOverrideThemeWallpaper(null);
                         }
-                        mSelectedTheme.setUseThemeHeader(!mUseMyHeader);
                         mEventLogger.logThemeSelected(mSelectedTheme,
                                 selected instanceof CustomTheme);
                         createAdapter(options);
@@ -420,6 +399,7 @@ public class ThemeFragment extends ToolbarFragment {
                     title.setTypeface(previewInfo.headlineFontFamily);
                     TextView body = card.findViewById(R.id.font_card_body);
                     body.setTypeface(previewInfo.bodyFontFamily);
+                    card.findViewById(R.id.font_card_divider).setBackgroundColor(accentColor);
                 }
             });
             if (previewInfo.icons.size() >= mIconIds.length) {
@@ -570,85 +550,11 @@ public class ThemeFragment extends ToolbarFragment {
                     }
                 });
             }
-            if (previewInfo.headerImage != null) {
-                addPage(new ThemePreviewPage(activity, R.string.preview_name_header,
-                        R.drawable.ic_nav_wallpaper, R.layout.preview_card_header_content,
-                        previewInfo.resolveAccentColor(res), previewInfo.resolvePrimaryColor(res)) {
-
-
-                    @Override
-                    protected boolean containsWallpaper() {
-                        return false;
-                    }
-
-                    @Override
-                    protected boolean containsHeader() {
-                        return true;
-                    }
-
-                    @Override
-                    protected void bindBody(boolean forceRebind) {
-                        if (card == null) {
-                            return;
-                        }
-
-                        ImageView v = (ImageView) card.findViewById(R.id.theme_preview_card_background_image);
-                        TextView desc = (TextView) card.findViewById(R.id.header_description);
-
-                        if (!theme.shouldUseThemeHeader()) {
-                            v.setVisibility(View.GONE);
-                            desc.setVisibility(View.VISIBLE);
-                            desc.setText(R.string.hint_header_system);
-                        } else {                        
-                            FrameLayout.LayoutParams parms = (FrameLayout.LayoutParams) v.getLayoutParams();
-                            parms.height = activity.getResources().getDimensionPixelSize(R.dimen.preview_header_height);
-                            v.setLayoutParams(parms);
-                            v.setVisibility(View.VISIBLE);
-                            v.setImageDrawable(previewInfo.headerImage);
-
-                            boolean headerDisabled = Settings.System.getInt(activity.getContentResolver(),
-                                    Settings.System.OMNI_STATUS_BAR_CUSTOM_HEADER, 0) == 0;
-                            if (headerDisabled) {
-                                desc.setVisibility(View.VISIBLE);
-                                desc.setText(R.string.hint_header_disabled);
-                            } else {
-                                desc.setVisibility(View.GONE);
-                            }
-                        }
-                        desc.setOnTouchListener(new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View v, MotionEvent event) {
-                                try {
-                                    ComponentName settings = new ComponentName("com.android.settings",
-                                            "com.android.settings.Settings$StyleSettingsActivity");
-                                    Intent intent = new Intent();
-                                    intent.setComponent(settings);
-                                    activity.startActivity(intent);
-                                } catch(Exception e) {
-                                    // ignore
-                                }
-                                return true;
-                            }
-                        });
-                        if (forceRebind) {
-                            card.requestLayout();
-                        }
-                    }
-                });
-            }
         }
 
         public void rebindWallpaperIfAvailable() {
             for (ThemePreviewPage page : mPages) {
                 if (page.containsWallpaper()) {
-                    page.bindBody(true);
-                }
-            }
-        }
-
-        public void rebindHeaderIfAvailable() {
-            for (ThemePreviewPage page : mPages) {
-                if (page.containsHeader()) {
                     page.bindBody(true);
                 }
             }
@@ -702,7 +608,7 @@ public class ThemeFragment extends ToolbarFragment {
                 if (mScrim != null) {
                     background = new LayerDrawable(new Drawable[]{background, mScrim});
                 }
-                ((ImageView) view.findViewById(R.id.theme_preview_card_background_image)).setImageDrawable(background);
+                ((ImageView) view.findViewById(R.id.theme_preview_card_background)).setImageDrawable(background);
                 if (mScrim == null && !mIsTranslucent) {
                     boolean shouldRecycle = false;
                     if (bitmap.getConfig() == Config.HARDWARE) {
@@ -713,12 +619,11 @@ public class ThemeFragment extends ToolbarFragment {
                     if (shouldRecycle) {
                         bitmap.recycle();
                     }
-                    // looks more confusing then what it helps
                     TextView header = view.findViewById(R.id.theme_preview_card_header);
                     if ((colorsHint & WallpaperColors.HINT_SUPPORTS_DARK_TEXT) == 0) {
-                        /*int colorLight = res.getColor(R.color.text_color_light, null);
+                        int colorLight = res.getColor(R.color.text_color_light, null);
                         header.setTextColor(colorLight);
-                        header.setCompoundDrawableTintList(ColorStateList.valueOf(colorLight));*/
+                        header.setCompoundDrawableTintList(ColorStateList.valueOf(colorLight));
                     } else {
                         header.setTextColor(res.getColor(R.color.text_color_dark, null));
                         header.setCompoundDrawableTintList(ColorStateList.valueOf(

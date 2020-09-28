@@ -25,10 +25,9 @@
     android:minHeight="@dimen/preview_theme_min_height" >
 
     <ImageView
-        android:id="@+id/theme_preview_card_background_image"
+        android:id="@+id/theme_preview_card_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:scaleType="centerCrop" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

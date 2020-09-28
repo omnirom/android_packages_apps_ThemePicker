@@ -77,13 +77,6 @@
                             android:ellipsize="end"
                             android:minHeight="@dimen/min_taptarget_height"
                             android:text="@string/keep_my_wallpaper"/>
-                        <CheckBox
-                            android:id="@+id/use_my_header"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:minHeight="@dimen/min_taptarget_height"
-                            android:text="@string/keep_my_header"/>
                     </LinearLayout>
 
                     <Button
