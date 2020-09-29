@@ -162,8 +162,6 @@ public class GridFragment extends ToolbarFragment {
 
     private void loadWallpaperBackground() {
         if (mHomeWallpaper != null && mCardHeight > 0 && mCardWidth > 0) {
-            Log.d(TAG, "loadWallpaperBackground mCardWidth = " + mCardWidth + " mCardHeight= " + mCardHeight);
-
             mHomeWallpaper.getThumbAsset(getContext()).decodeBitmap(mCardWidth,
                     mCardHeight,
                     bitmap -> {
