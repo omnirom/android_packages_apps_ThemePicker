@@ -16,12 +16,14 @@
 package com.android.customization.widget;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -58,6 +60,8 @@ public class PreviewPager extends LinearLayout {
     private PagerAdapter mAdapter;
     private ViewPager.OnPageChangeListener mExternalPageListener;
     private float mScreenAspectRatio;
+    private int mPaddingTop;
+    private int mPaddingBottom;
 
     public PreviewPager(Context context) {
         this(context, null);
@@ -117,6 +121,8 @@ public class PreviewPager extends LinearLayout {
         });
         mPageListener = createPageListener();
         mViewPager.addOnPageChangeListener(mPageListener);
+        mPaddingBottom = mViewPager.getPaddingBottom();
+        mPaddingTop = mViewPager.getPaddingTop();
     }
 
     @Override
@@ -128,20 +134,31 @@ public class PreviewPager extends LinearLayout {
             int indicatorHeight = ((View) mPageIndicator.getParent()).getLayoutParams().height;
             int pagerHeight = availableHeight - indicatorHeight;
             if (availableWidth > 0) {
-                int absoluteCardWidth = (int) ((pagerHeight - mViewPager.getPaddingBottom()
-                        - mViewPager.getPaddingTop())/ mScreenAspectRatio);
+                int absoluteCardWidth = (int) ((pagerHeight - mPaddingBottom
+                        - mPaddingTop) / mScreenAspectRatio);
+                int absoluteCardHeight = (int) (absoluteCardWidth * mScreenAspectRatio);
+
+                if (getContext().getResources().getConfiguration().orientation
+                        == Configuration.ORIENTATION_LANDSCAPE) {
+                    int tmp = absoluteCardWidth;
+                    absoluteCardWidth = absoluteCardHeight;
+                    absoluteCardHeight = tmp;
+                }
+
                 int hPadding = (availableWidth / 2) - (absoluteCardWidth / 2);
+                int vPadding = (availableHeight / 2) - (absoluteCardHeight / 2);
+
                 mViewPager.setPaddingRelative(
                         hPadding,
-                        mViewPager.getPaddingTop(),
+                        mPaddingTop + vPadding / 2,
                         hPadding,
-                        mViewPager.getPaddingBottom());
+                        mPaddingBottom + vPadding / 2);
             }
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public void forceCardWidth(int widthPixels) {
+    /*public void forceCardWidth(int widthPixels) {
         mViewPager.addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
@@ -153,7 +170,7 @@ public class PreviewPager extends LinearLayout {
             }
         });
         mViewPager.invalidate();
-    }
+    }*/
 
     /**
      * Call this method to set the {@link PagerAdapter} backing the {@link ViewPager} in this
