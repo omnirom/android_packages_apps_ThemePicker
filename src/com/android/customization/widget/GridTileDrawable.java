@@ -30,7 +30,7 @@ public class GridTileDrawable extends Drawable {
     private float mCellSize = -1f;
     private float mSpaceBetweenIcons;
 
-    public GridTileDrawable(int cols, int rows, String path) {
+    public GridTileDrawable(int rows, int cols, String path) {
         mCols = cols;
         mRows = rows;
 
