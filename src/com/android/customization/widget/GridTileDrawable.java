@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.core.graphics.PathParser;
 
@@ -29,8 +30,10 @@ public class GridTileDrawable extends Drawable {
     private final Matrix mScaleMatrix;
     private float mCellSize = -1f;
     private float mSpaceBetweenIcons;
+    private float mStartMargin;
+    private int mWidth;
 
-    public GridTileDrawable(int cols, int rows, String path) {
+    public GridTileDrawable(int rows, int cols, String path) {
         mCols = cols;
         mRows = rows;
 
@@ -42,9 +45,9 @@ public class GridTileDrawable extends Drawable {
     @Override
     protected void onBoundsChange(Rect bounds) {
         super.onBoundsChange(bounds);
-        mCellSize = (float) bounds.height() / mRows;
+        mCellSize = mRows > mCols ? (float) bounds.height() / mRows : (float) bounds.height() / mCols;
         mSpaceBetweenIcons = mCellSize * ((1 - ICON_SCALE) / 2);
-
+        mStartMargin = mRows == mCols ? 0 : (int)((bounds.width() - (mCols * mCellSize)) / 2);
         float scaleFactor = (mCellSize * ICON_SCALE) / PATH_SIZE;
         mScaleMatrix.setScale(scaleFactor, scaleFactor);
         mShapePath.transform(mScaleMatrix, mTransformedPath);
@@ -55,7 +58,7 @@ public class GridTileDrawable extends Drawable {
         for (int r = 0; r < mRows; r++) {
             for (int c = 0; c < mCols; c++) {
                 int saveCount = canvas.save();
-                float x = (c * mCellSize) + mSpaceBetweenIcons;
+                float x = mStartMargin + (c * mCellSize) + mSpaceBetweenIcons;
                 float y = (r * mCellSize) + mSpaceBetweenIcons;
                 canvas.translate(x, y);
                 canvas.drawPath(mTransformedPath, mPaint);
