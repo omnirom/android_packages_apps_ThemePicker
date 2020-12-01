@@ -31,6 +31,8 @@ public class Clockface implements CustomizationOption<Clockface> {
     private final Asset mPreview;
     private final Asset mThumbnail;
 
+    private static final String DEFAULT_CLOCK_PROVIDER = "com.android.keyguard.clock.DefaultClockController";
+
     private Clockface(String title, String id, Asset preview, Asset thumbnail) {
         mTitle = title;
         mId = id;
@@ -56,8 +58,7 @@ public class Clockface implements CustomizationOption<Clockface> {
         // {"clock":"com.android.keyguard.clock.BinaryClockController"}
         // be lazy and just use contains of mId - no need to construt json object
         String currentClock = ((BaseClockManager) manager).getCurrentClock();
-        // Empty clock Id is the default system clock
-        return (TextUtils.isEmpty(currentClock) && TextUtils.isEmpty(mId))
+        return (TextUtils.isEmpty(currentClock) && DEFAULT_CLOCK_PROVIDER.equals(mId))
                 || (mId != null && !TextUtils.isEmpty(currentClock) && currentClock.contains(mId));
     }
 
