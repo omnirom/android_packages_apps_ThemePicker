@@ -14,4 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="primary_component_title">Vali põhivärv</string>
+    <string name="preview_name_primary">Põhivärv</string>
+    <string name="preview_name_color_new">Rõhuvärv</string>
+    <string name="color_component_title_new">Vali rõhuvärv</string>
+    <string name="no_options_message_primary">Antud režiimis pole ülekate saadaval</string>
+    <string name="no_options_message_default">Ülekatteid pole saadaval</string>
+    <string name="preview_name_header">Päis</string>
+    <string name="hint_header_disabled">Päisepildid on keelatud</string>
+    <string name="keep_my_header">Säilita praegune päis</string>
+    <string name="hint_header_system">Praegune päis</string>
+</resources>
