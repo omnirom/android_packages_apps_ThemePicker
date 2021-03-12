@@ -21,8 +21,4 @@
     <string name="color_component_title_new">Escolha cor de destaque</string>
     <string name="no_options_message_primary">Nenhuma sobreposição disponível para o modo atual</string>
     <string name="no_options_message_default">Não há sobreposições disponíveis</string>
-    <string name="preview_name_header">Cabeçalho</string>
-    <string name="hint_header_disabled">Imagens de cabeçalho estão desativadas</string>
-    <string name="keep_my_header">Manter cabeçalho atual</string>
-    <string name="hint_header_system">Cabeçalho atual</string>
 </resources>

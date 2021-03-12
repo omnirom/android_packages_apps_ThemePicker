@@ -21,8 +21,4 @@
     <string name="color_component_title_new">Vali rõhuvärv</string>
     <string name="no_options_message_primary">Antud režiimis pole ülekate saadaval</string>
     <string name="no_options_message_default">Ülekatteid pole saadaval</string>
-    <string name="preview_name_header">Päis</string>
-    <string name="hint_header_disabled">Päisepildid on keelatud</string>
-    <string name="keep_my_header">Säilita praegune päis</string>
-    <string name="hint_header_system">Praegune päis</string>
 </resources>

@@ -14,4 +14,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="primary_component_title">Choisir une couleur principale</string>
+    <string name="preview_name_primary">Couleur principale</string>
+    <string name="preview_name_color_new">Couleur d’accentuation</string>
+    <string name="color_component_title_new">Choisir une couleur d\'accentuation</string>
+    <string name="no_options_message_primary">Aucune surcouche disponible pour le mode actuel</string>
+    <string name="no_options_message_default">Aucune surcouche disponible</string>
+    <string name="no_options_message">Aucune couleur primaire valide disponible</string>
+</resources>

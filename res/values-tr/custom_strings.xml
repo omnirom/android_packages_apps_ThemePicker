@@ -21,8 +21,5 @@
     <string name="color_component_title_new">Ara rengi seçin</string>
     <string name="no_options_message_primary">Mevcut mod için kullanılabilir bir yardımcı grafik yok</string>
     <string name="no_options_message_default">Yardımcı grafik kullanılabilir değil</string>
-    <string name="preview_name_header">Başlık</string>
-    <string name="hint_header_disabled">Başlık görüntüleri devre dışı bırakıldı</string>
-    <string name="keep_my_header">Mevcut başlığı tut</string>
-    <string name="hint_header_system">Mevcut başlık</string>
+    <string name="no_options_message">Geçerli bir esas renk yoktur</string>
 </resources>
