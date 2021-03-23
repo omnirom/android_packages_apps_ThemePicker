@@ -469,7 +469,7 @@ public class ThemeFragment extends ToolbarFragment {
                     }
                 });
             }
-            if (false /*previewInfo.colorPrimary != -1*/) {
+            if (previewInfo.colorPrimary != -1) {
                 addPage(new ThemePreviewPage(activity, R.string.preview_name_primary,
                         R.drawable.ic_colorize_24px, R.layout.preview_card_primary_content,
                         previewInfo.resolveAccentColor(res), previewInfo.resolvePrimaryColor(res)) {
