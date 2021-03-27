@@ -21,4 +21,5 @@
     <string name="color_component_title_new">Akzentfarbe wählen</string>
     <string name="no_options_message_primary">Kein Overlay für den aktuellen Modus verfügbar</string>
     <string name="no_options_message_default">Keine Overlays verfügbar</string>
+    <string name="no_options_message">Keine gültigen Primärfarben verfügbar</string>
 </resources>

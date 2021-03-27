@@ -14,4 +14,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="primary_component_title">Vyberte hlavnú farbu</string>
+    <string name="preview_name_primary">Hlavná farba</string>
+    <string name="preview_name_color_new">Farba zvýraznenia</string>
+    <string name="color_component_title_new">Vyberte farbu zvýraznenia</string>
+    <string name="no_options_message_primary">Pre aktuálny režim nie je k dispozícii žiadne prekrytie</string>
+    <string name="no_options_message_default">Nie sú k dispozícii žiadne prekrytia</string>
+    <string name="no_options_message">Nie sú k dispozícii žiadne platné hlavné farby</string>
+</resources>
