@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="primary_component_title">Scegli colore primario</string>
+    <string name="primary_component_title">Scegli il colore primario</string>
     <string name="preview_name_primary">Colore primario</string>
-    <string name="preview_name_color_new">Colore di rilievo</string>
-    <string name="color_component_title_new">Scegli colore di rilievo</string>
+    <string name="preview_name_color_new">Colore secondario</string>
+    <string name="color_component_title_new">Scegli il colore secondario</string>
     <string name="no_options_message_primary">Nessuna sovrapposizione disponibile per la modalità corrente</string>
     <string name="no_options_message_default">Nessuna sovrapposizione disponibile</string>
     <string name="no_options_message">Nessun colore primario valido disponibile</string>
