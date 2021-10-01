@@ -223,7 +223,14 @@ public class ThemeBundle implements CustomizationOption<ThemeBundle> {
         if (isDefault()) {
             return new JSONObject();
         }
-        JSONObject json = new JSONObject(mPackagesByCategory);
+        Map<String, String> m = new HashMap<>();
+        for (String key : mPackagesByCategory.keySet()) {
+            if (key != null) {
+                m.put(key, mPackagesByCategory.get(key));
+            }
+        }
+
+        JSONObject json = new JSONObject(m);
         // Remove items with null values to avoid deserialization issues.
         removeNullValues(json);
         if (insertTimestamp) {
