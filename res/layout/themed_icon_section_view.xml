@@ -50,9 +50,4 @@
             style="@style/Switch.SettingsLib"/>
 
     </LinearLayout>
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="8dp" />
-
 </com.android.customization.picker.themedicon.ThemedIconSectionView>
