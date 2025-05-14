@@ -58,10 +58,10 @@ public class FontOption implements CustomizationOption<FontOption> {
         Resources res = view.getContext().getResources();
         ((TextView) view.findViewById(R.id.thumbnail_text)).setTypeface(
                 mHeadlineFont);
-        int colorFilter = view.getContext().getResources().getColor(
+        int colorFilter = ResourceUtils.getColorAttr(view.getContext(),
                 view.isActivated() || view.getId() == R.id.font_section_tile
-                        ? R.color.system_on_surface
-                        : R.color.system_on_surface_variant);
+                        ? android.R.attr.textColorPrimary
+                        : android.R.attr.textColorTertiary);
         ((TextView) view.findViewById(R.id.thumbnail_text)).setTextColor(colorFilter);
         view.setContentDescription(mTitle);
     }
