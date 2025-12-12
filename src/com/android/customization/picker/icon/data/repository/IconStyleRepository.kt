@@ -1,0 +1,47 @@
+/*
+ * Copyright (C) 2024 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.android.customization.picker.icon.data.repository
+
+import com.android.customization.picker.icon.shared.model.IconStyle
+import com.android.customization.picker.icon.shared.model.IconStyleModel
+import com.android.wallpaper.util.BasePreviewUtils
+import kotlinx.coroutines.flow.Flow
+
+interface IconStyleRepository {
+
+    val previewUtilsFlow: Flow<BasePreviewUtils?>
+
+    val isCustomizationAvailable: Flow<Boolean>
+
+    val isThemedIconActivated: Flow<Boolean>
+
+    suspend fun setThemedIconEnabled(enabled: Boolean)
+
+    val iconStyleModels: Flow<List<IconStyleModel>>
+
+    val selectedIconStyle: Flow<IconStyle>
+
+    /**
+     * Sets the selected icon style.
+     *
+     * @param iconStyle The icon style to set.
+     * @return True if the icon style was set successfully and data was updated, false otherwise.
+     */
+    suspend fun setIconStyle(iconStyle: IconStyle): Boolean
+
+    suspend fun getIconStyleForLogging(): Int
+}

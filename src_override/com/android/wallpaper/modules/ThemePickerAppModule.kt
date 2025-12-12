@@ -30,23 +30,26 @@ import com.android.customization.picker.color.data.repository.ColorPickerReposit
 import com.android.customization.picker.color.data.repository.ColorPickerRepository2
 import com.android.customization.picker.color.data.repository.ColorPickerRepositoryImpl
 import com.android.customization.picker.color.data.repository.ColorPickerRepositoryImpl2
-import com.android.customization.picker.themedicon.data.repository.ThemedIconRepository
-import com.android.customization.picker.themedicon.data.repository.ThemedIconRepositoryImpl
+import com.android.customization.picker.icon.data.repository.IconStyleRepository
+import com.android.customization.picker.icon.data.repository.ThemePickerIconStyleRepository
 import com.android.systemui.shared.clocks.ClockRegistry
 import com.android.systemui.shared.customization.data.content.CustomizationProviderClient
 import com.android.systemui.shared.customization.data.content.CustomizationProviderClientImpl
 import com.android.systemui.shared.settings.data.repository.SecureSettingsRepository
-import com.android.systemui.shared.settings.data.repository.SecureSettingsRepositoryImpl
 import com.android.systemui.shared.settings.data.repository.SystemSettingsRepository
-import com.android.systemui.shared.settings.data.repository.SystemSettingsRepositoryImpl
 import com.android.wallpaper.customization.ui.binder.ThemePickerCustomizationOptionsBinder
 import com.android.wallpaper.customization.ui.binder.ThemePickerToolbarBinder
+import com.android.wallpaper.customization.ui.util.ThemePickerCustomizationOptionUtil
 import com.android.wallpaper.effects.DefaultEffectsController
 import com.android.wallpaper.effects.EffectsController
+import com.android.wallpaper.module.DefaultExtendedEffectsHelper
 import com.android.wallpaper.module.DefaultPartnerProvider
 import com.android.wallpaper.module.DefaultRecentWallpaperManager
+import com.android.wallpaper.module.DefaultThirdPartyLiveWallpaperModelFactory
+import com.android.wallpaper.module.ExtendedEffectsHelper
 import com.android.wallpaper.module.PartnerProvider
 import com.android.wallpaper.module.RecentWallpaperManager
+import com.android.wallpaper.module.ThirdPartyLiveWallpaperModelFactory
 import com.android.wallpaper.module.WallpaperPreferences
 import com.android.wallpaper.module.logging.UserEventLogger
 import com.android.wallpaper.picker.category.domain.interactor.CategoriesLoadingStatusInteractor
@@ -70,11 +73,20 @@ import com.android.wallpaper.picker.category.wrapper.WallpaperCategoryWrapper
 import com.android.wallpaper.picker.common.preview.ui.binder.ThemePickerWorkspaceCallbackBinder
 import com.android.wallpaper.picker.common.preview.ui.binder.WorkspaceCallbackBinder
 import com.android.wallpaper.picker.customization.ui.binder.CustomizationOptionsBinder
+import com.android.wallpaper.picker.customization.ui.binder.DefaultPackThemeSuggestedEntryBinder
+import com.android.wallpaper.picker.customization.ui.binder.PackThemeSuggestedEntryBinder
 import com.android.wallpaper.picker.customization.ui.binder.ToolbarBinder
+import com.android.wallpaper.picker.customization.ui.util.CustomizationOptionUtil
 import com.android.wallpaper.picker.di.modules.BackgroundDispatcher
 import com.android.wallpaper.picker.di.modules.MainDispatcher
+import com.android.wallpaper.picker.domain.interactor.PackThemeInteractor
+import com.android.wallpaper.picker.domain.interactor.implementations.ThemePickerPackThemeInteractor
+import com.android.wallpaper.picker.preview.ui.binder.ApplyWallpaperOptionsProvider
+import com.android.wallpaper.picker.preview.ui.binder.DefaultApplyWallpaperOptionsProvider
 import com.android.wallpaper.picker.preview.ui.util.DefaultImageEffectDialogUtil
 import com.android.wallpaper.picker.preview.ui.util.ImageEffectDialogUtil
+import com.android.wallpaper.settings.data.repository.SecureSettingsRepositoryImpl
+import com.android.wallpaper.settings.data.repository.SystemSettingsRepositoryImpl
 import com.android.wallpaper.util.converter.DefaultWallpaperModelFactory
 import com.android.wallpaper.util.converter.WallpaperModelFactory
 import dagger.Binds
@@ -109,7 +121,13 @@ abstract class ThemePickerAppModule {
 
     @Binds
     @Singleton
-    abstract fun bindThemedIconRepository(impl: ThemedIconRepositoryImpl): ThemedIconRepository
+    abstract fun bindIconStyleRepository(impl: ThemePickerIconStyleRepository): IconStyleRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindPackThemeSuggestedEntryBinder(
+        impl: DefaultPackThemeSuggestedEntryBinder
+    ): PackThemeSuggestedEntryBinder
 
     @Binds
     @Singleton
@@ -141,7 +159,19 @@ abstract class ThemePickerAppModule {
 
     @Binds
     @Singleton
+    abstract fun bindCustomizationOptionUtil(
+        impl: ThemePickerCustomizationOptionUtil
+    ): CustomizationOptionUtil
+
+    @Binds
+    @Singleton
     abstract fun bindEffectsController(impl: DefaultEffectsController): EffectsController
+
+    @Binds
+    @Singleton
+    abstract fun bindExtendedEffectsHelper(
+        impl: DefaultExtendedEffectsHelper
+    ): ExtendedEffectsHelper
 
     @Binds
     @Singleton
@@ -158,6 +188,10 @@ abstract class ThemePickerAppModule {
     abstract fun bindImageEffectDialogUtil(
         impl: DefaultImageEffectDialogUtil
     ): ImageEffectDialogUtil
+
+    @Binds
+    @Singleton
+    abstract fun bindPackThemeInteractor(impl: ThemePickerPackThemeInteractor): PackThemeInteractor
 
     @Binds
     @Singleton
@@ -214,6 +248,18 @@ abstract class ThemePickerAppModule {
     abstract fun bindRecentWallpaperManager(
         impl: DefaultRecentWallpaperManager
     ): RecentWallpaperManager
+
+    @Binds
+    @Singleton
+    abstract fun bindApplyWallpaperOptionsProvider(
+        impl: DefaultApplyWallpaperOptionsProvider
+    ): ApplyWallpaperOptionsProvider
+
+    @Binds
+    @Singleton
+    abstract fun bindThirdPartyLiveWallpaperModelFactory(
+        impl: DefaultThirdPartyLiveWallpaperModelFactory
+    ): ThirdPartyLiveWallpaperModelFactory
 
     companion object {
 

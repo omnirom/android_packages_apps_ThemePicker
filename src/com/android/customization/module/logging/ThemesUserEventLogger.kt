@@ -17,7 +17,7 @@ package com.android.customization.module.logging
 
 import android.stats.style.StyleEnums
 import androidx.annotation.IntDef
-import com.android.customization.model.grid.GridOption
+import com.android.customization.model.grid.GridOptionModel
 import com.android.wallpaper.module.logging.UserEventLogger
 
 /** Extension of [UserEventLogger] that adds ThemePicker specific events. */
@@ -25,9 +25,13 @@ interface ThemesUserEventLogger : UserEventLogger {
 
     fun logThemeColorApplied(@ColorSource source: Int, style: Int, seedColor: Int)
 
-    fun logGridApplied(grid: GridOption)
+    fun logGridApplied(grid: GridOptionModel)
 
-    fun logClockApplied(clockId: String)
+    /**
+     * @param useClockCustomization When setting style, if we use further clock customization like
+     *   width, weight and round corners for the font.
+     */
+    fun logClockApplied(clockId: String, useClockCustomization: Boolean)
 
     fun logClockColorApplied(seedColor: Int)
 
@@ -35,11 +39,15 @@ interface ThemesUserEventLogger : UserEventLogger {
 
     fun logThemedIconApplied(useThemeIcon: Boolean)
 
+    fun logIconStyleApplied(iconStyle: Int)
+
     fun logLockScreenNotificationApplied(showLockScreenNotifications: Boolean)
 
     fun logShortcutApplied(shortcut: String, shortcutSlotId: String)
 
     fun logDarkThemeApplied(useDarkTheme: Boolean)
+
+    fun logShapeApplied(shapeId: String)
 
     @IntDef(
         StyleEnums.COLOR_SOURCE_UNSPECIFIED,
@@ -57,6 +65,14 @@ interface ThemesUserEventLogger : UserEventLogger {
     )
     @Retention(AnnotationRetention.SOURCE)
     annotation class ClockSize
+
+    @IntDef(
+        StyleEnums.APP_ICON_STYLE_UNSPECIFIED,
+        StyleEnums.APP_ICON_STYLE_THEMED,
+        StyleEnums.APP_ICON_STYLE_EXTENDIBLE_THEME,
+    )
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class AppIconStyle
 
     companion object {
         const val NULL_SEED_COLOR = 0

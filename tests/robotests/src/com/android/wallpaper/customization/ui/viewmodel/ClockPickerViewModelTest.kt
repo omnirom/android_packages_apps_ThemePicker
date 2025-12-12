@@ -28,7 +28,7 @@ import com.android.customization.picker.clock.ui.viewmodel.ClockColorViewModel
 import com.android.customization.picker.clock.ui.viewmodel.ClockSettingsViewModel
 import com.android.customization.picker.color.data.repository.FakeColorPickerRepository2
 import com.android.customization.picker.color.domain.interactor.ColorPickerInteractor2
-import com.android.systemui.plugins.clocks.AxisPresetConfig.IndexedStyle
+import com.android.systemui.plugins.keyguard.ui.clocks.AxisPresetConfig.IndexedStyle
 import com.android.systemui.shared.customization.data.content.FakeCustomizationProviderClient
 import com.android.themepicker.R
 import com.android.wallpaper.customization.ui.viewmodel.ClockPickerViewModel.Tab
@@ -262,6 +262,22 @@ class ClockPickerViewModelTest {
         assertThat(option1OnClicked()).isNull()
     }
 
+    @Test
+    fun showPickerClockControllerView_false_by_default() = runTest {
+        val showPickerClockControllerView =
+            collectLastValue(underTest.showPickerClockControllerView)
+
+        assertThat(showPickerClockControllerView()).isFalse()
+    }
+
+    @Test
+    fun showKeyguardPreviewRendererSmartspace_true_by_default() = runTest {
+        val showKeyguardPreviewRendererSmartspace =
+            collectLastValue(underTest.showKeyguardPreviewRendererSmartspace)
+
+        assertThat(showKeyguardPreviewRendererSmartspace()).isTrue()
+    }
+
     //// Clock font
     @Test
     fun previewingClockPresetIndexedStyle_whenInitialState() = runTest {
@@ -386,11 +402,22 @@ class ClockPickerViewModelTest {
     //// Clock color
     @Test
     fun sliderProgress_whenOnSliderProgressChanged() = runTest {
-        val sliderProgress = collectLastValue(underTest.previewingSliderProgress)
+        val sliderProgress = collectLastValue(underTest.previewingColorSliderProgress)
 
         assertThat(sliderProgress()).isEqualTo(ClockMetadataModel.DEFAULT_COLOR_TONE_PROGRESS)
 
         underTest.onSliderProgressChanged(87)
+
+        assertThat(sliderProgress()).isEqualTo(87)
+    }
+
+    @Test
+    fun sliderTouchUpProgress_whenOnSliderProgressChanged() = runTest {
+        val sliderProgress = collectLastValue(underTest.previewingColorSliderProgress)
+
+        assertThat(sliderProgress()).isEqualTo(ClockMetadataModel.DEFAULT_COLOR_TONE_PROGRESS)
+
+        underTest.onSliderTouchUpProgressChanged(87)
 
         assertThat(sliderProgress()).isEqualTo(87)
     }
@@ -592,7 +619,7 @@ class ClockPickerViewModelTest {
     fun apply_notNullWhenSliderProgressChanged() = runTest {
         val onApply = collectLastValue(underTest.onApply)
 
-        underTest.onSliderProgressChanged(87)
+        underTest.onSliderTouchUpProgressChanged(87)
 
         assertThat(onApply()).isNotNull()
     }
@@ -601,7 +628,7 @@ class ClockPickerViewModelTest {
     fun apply_nullAfterApplyingSliderProgress() = runTest {
         val onApply = collectLastValue(underTest.onApply)
 
-        underTest.onSliderProgressChanged(87)
+        underTest.onSliderTouchUpProgressChanged(87)
         onApply()?.invoke()
 
         assertThat(onApply()).isNull()

@@ -17,6 +17,7 @@
 package com.android.wallpaper.customization.ui.viewmodel
 
 import android.content.Context
+import android.util.Log
 import com.android.customization.model.color.ColorOption
 import com.android.customization.model.color.ColorOptionImpl
 import com.android.customization.module.logging.ThemesUserEventLogger
@@ -35,6 +36,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +47,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 
 /** Models UI state for a color picker experience. */
 class ColorPickerViewModel2
@@ -60,6 +63,9 @@ constructor(
 
     private val overridingColorOption = MutableStateFlow<ColorOption?>(null)
     val previewingColorOption = overridingColorOption.asStateFlow()
+
+    val _previewingColorOptionIndex = MutableStateFlow<Int>(0)
+    val previewingColorOptionIndex = _previewingColorOptionIndex.asStateFlow()
 
     private val selectedColorTypeTabId = MutableStateFlow<ColorType?>(null)
 
@@ -119,7 +125,7 @@ constructor(
             colorOptions
                 .map { colorOptionEntry ->
                     colorOptionEntry.key to
-                        colorOptionEntry.value.map { colorOption ->
+                        colorOptionEntry.value.mapIndexed { index, colorOption ->
                             colorOption as ColorOptionImpl
                             val isSelectedFlow: StateFlow<Boolean> =
                                 combine(previewingColorOption, selectedColorOption) {
@@ -149,6 +155,7 @@ constructor(
                                             {
                                                 viewModelScope.launch {
                                                     overridingColorOption.value = colorOption
+                                                    _previewingColorOptionIndex.value = index
                                                 }
                                             }
                                         }
@@ -171,16 +178,28 @@ constructor(
                 } else {
                     {
                         coroutineScope {
-                            launch { interactor.select(it) }
-                            // Suspend until first color update
-                            colorUpdateViewModel.systemColorsUpdatedNoReplay.take(1).collect {
-                                return@collect
+                            launch {
+                                val success = interactor.select(it)
+                                if (success) {
+                                    logger.logThemeColorApplied(
+                                        it.sourceForLogging,
+                                        it.styleForLogging,
+                                        it.seedColor,
+                                    )
+                                }
                             }
-                            logger.logThemeColorApplied(
-                                it.sourceForLogging,
-                                it.styleForLogging,
-                                it.seedColor,
-                            )
+                            // Suspend until first color update, or time out after 3 seconds
+                            try {
+                                withTimeout(COLOR_UPDATE_TIMEOUT_MILLIS) {
+                                    colorUpdateViewModel.systemColorsUpdatedNoReplay
+                                        .take(1)
+                                        .collect {
+                                            return@collect
+                                        }
+                                }
+                            } catch (e: TimeoutCancellationException) {
+                                Log.w(TAG, "Timed out waiting for color update", e)
+                            }
                         }
                     }
                 }
@@ -204,5 +223,10 @@ constructor(
     @AssistedFactory
     interface Factory {
         fun create(viewModelScope: CoroutineScope): ColorPickerViewModel2
+    }
+
+    companion object {
+        const val TAG = "ColorPickerViewModel2"
+        const val COLOR_UPDATE_TIMEOUT_MILLIS = 3000L
     }
 }
